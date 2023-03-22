@@ -1,0 +1,47 @@
+*{
+    text-align: center; 
+    /*border: 1px red solid;*/
+} 
+.message-container{
+    background-color: pink;
+}
+.message{
+    font-size: 10px;
+    color: red;
+}
+
+form div{
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+.col{
+    margin-left: auto;
+    margin-right: auto;
+}
+.select *{
+    margin-left: 5px;
+}
+table{margin: auto;}
+.input-field{
+    width: 200px;
+    height: 30px;
+    margin-left: 20px;
+}
+.input-text{
+    text-align: left;
+}
+body{
+    background: url(../img/fondo.png) no-repeat center center fixed;
+}
+#sub {
+    background: linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(253,219,45,0.6951155462184874) 100%);
+    padding: 20px;
+    border-radius: 10px;
+}
+label {
+    font-size: 15px;
+    font-weight: bold;
+}
+#logo {
+    width: 50px;
+}

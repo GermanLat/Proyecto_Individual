@@ -55,9 +55,9 @@ class User:
         print(f'Inicio del módulo {inspect.stack()[0][3]}() \t- \tClass: {cls.__name__}')
         query = "INSERT INTO " + table_name + " (natural_person_id, legal_person_id, email, ruc, password, created_at, updated_at) \
             VALUES (%(natural_person_id)s, %(legal_person_id)s, %(email)s, %(ruc)s, %(password)s, NOW(), NOW());"
-        result = connectToMySQL(schema_name).query_db(query, data_D)
+        result_N = connectToMySQL(schema_name).query_db(query, data_D)
         print(f'Fin del módulo {inspect.stack()[0][3]}() \t- \tClass: {cls.__name__}')
-        return result
+        return result_N
     
     # #SELECT QUERIES
     # @classmethod    #usar @classmethod siempre que consulte a la base de datos
@@ -74,31 +74,32 @@ class User:
     ###USANDOSE
     #SELECT QUERIES (ONE TO ONE)
     @classmethod
-    def get_one_C(cls, data_D):
+    def get_one_D(cls, data_D):
         print(f'Inicio del módulo {inspect.stack()[0][3]}() \t- \tClass: {cls.__name__}')
         query  = "SELECT * FROM " + table_name + "\
                 LEFT JOIN natural_persons ON users.natural_person_id=natural_persons.id\
                 LEFT JOIN legal_persons ON users.legal_person_id=legal_persons.id\
                 WHERE users.id = %(id)s;"
-        result = connectToMySQL(schema_name).query_db(query, data_D)
-        print(result)
-        if result[0]["natural_person_id"]:
+        result_LD = connectToMySQL(schema_name).query_db(query, data_D)
+        print(result_LD)
+        if result_LD[0]["natural_person_id"]:
             query  = "SELECT users.id as id, natural_persons.identity_document as identity_document,\
                 CONCAT(natural_persons.first_name, ' ', natural_persons.last_name) as complete_name, users.email as email,\
                 users.ruc as ruc, users.password as password FROM " + table_name + "\
                 LEFT JOIN natural_persons ON users.natural_person_id=natural_persons.id\
                 WHERE users.id = %(id)s;"
-        if result[0]["legal_person_id"]:
+        if result_LD[0]["legal_person_id"]:
             query  = "SELECT users.id as id, null as identity_document,\
                 legal_persons.name as complete_name, users.email as email,\
                 users.ruc as ruc, users.password as password FROM " + table_name + "\
                 LEFT JOIN legal_persons ON users.legal_person_id=legal_persons.id\
                 WHERE users.id = %(id)s;"
-        result = connectToMySQL(schema_name).query_db(query, data_D)
-        if len(result)<1:       #AQUI ESTARIA MAL SI NO ENCUENTRA NADA PORQUE DEVOLVERIA UNA LISTA EN VEZ DE UNA CLASE
+        result_LD = connectToMySQL(schema_name).query_db(query, data_D)
+        print(result_LD)
+        if len(result_LD)<1:       #AQUI ESTARIA MAL SI NO ENCUENTRA NADA PORQUE DEVOLVERIA UNA LISTA EN VEZ DE UNA CLASE
             return {}
         print(f'Fin del módulo {inspect.stack()[0][3]}() \t- \tClass: {cls.__name__}')
-        return cls(result[0])
+        return result_LD[0]
     
     ###USANDOSE
     @classmethod

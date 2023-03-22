@@ -5,6 +5,7 @@ from flask_app.models.natural_person import Natural_Person
 from flask_app.models.legal_person import Legal_Person
 from flask_app.models.transaction import Transaction
 from flask_app.models.document import Document
+from datetime import date, datetime
 import inspect      #sirve para poder acceder al nombre de un método dentro del mismo, pudiendo servir para imprimirlo y detectar errores
 
 from flask_bcrypt import Bcrypt
@@ -115,74 +116,8 @@ def dashboard():
     validate_logged_in()
     data_D ={"id":session['user_id']}     #Id del usuario guardado en "Session"
     print(f'Fin del módulo {inspect.stack()[0][3]}() \t- \tPath: {request.path} \t- \tMétodo: {request.method}')
-    return render_template("dashboard.html", user_C=User.get_one_C(data_D))
-
-# #ADD PIE
-# @app.route('/add', methods=['POST'])
-# def add():
-#     print(f'Inicio del módulo {inspect.stack()[0][3]}() \t- \tPath: {request.path} \t- \tMétodo: {request.method}')
-#     if not Pypie.validate_pypie(request.form):
-#         return redirect("/dashboard")
-#     Pypie.save(request.form)
-#     print(f'Fin del módulo {inspect.stack()[0][3]}() \t- \tPath: {request.path} \t- \tMétodo: {request.method}')
-#     return redirect('/dashboard')
-
-# #EDIT PIE
-# @app.route('/edit/<int:id>')
-# def edit(id):
-#     print(f'Inicio del módulo {inspect.stack()[0][3]}() \t- \tPath: {request.path} \t- \tMétodo: {request.method}')
-#     data = { "id" : id }
-#     print(f'Fin del módulo {inspect.stack()[0][3]}() \t- \tPath: {request.path} \t- \tMétodo: {request.method}')
-#     return render_template('edit_pie.html', pypie=Pypie.get_one(data))
-
-# @app.route('/edit',methods=['POST'])
-# def update():
-#     print(f'Inicio del módulo {inspect.stack()[0][3]}() \t- \tPath: {request.path} \t- \tMétodo: {request.method}')
-#     print(request.form['id'])
-#     if not Pypie.validate_pypie(request.form):
-#         return redirect("/edit/"+str(request.form['id']))
-#     Pypie.update(request.form)
-#     print(f'Fin del módulo {inspect.stack()[0][3]}() \t- \tPath: {request.path} \t- \tMétodo: {request.method}')
-#     return redirect('/dashboard')
-
-# #DELETE PIE
-# @app.route('/delete/<int:id>')
-# def destroy(id):
-#     print(f'Inicio del módulo {inspect.stack()[0][3]}() \t- \tPath: {request.path} \t- \tMétodo: {request.method}')
-#     data ={'id': id}
-#     Pypie.destroy(data)
-#     print(f'Fin del módulo {inspect.stack()[0][3]}() \t- \tPath: {request.path} \t- \tMétodo: {request.method}')
-#     return redirect('/dashboard')
-
-# #RANKING
-# @app.route('/pies')
-# def derby():
-#     print(f'Inicio del módulo {inspect.stack()[0][3]}() \t- \tPath: {request.path} \t- \tMétodo: {request.method}')
-#     print(f'Fin del módulo {inspect.stack()[0][3]}() \t- \tPath: {request.path} \t- \tMétodo: {request.method}')
-#     return render_template('all_pies.html', all_pypies=Pypie.group_by_votes())
-
-# #SHOW PIE
-# @app.route('/show/<int:id>')
-# def show(id):
-#     print(f'Inicio del módulo {inspect.stack()[0][3]}() \t- \tPath: {request.path} \t- \tMétodo: {request.method}')
-#     data ={'id': id}
-#     print(f'Fin del módulo {inspect.stack()[0][3]}() \t- \tPath: {request.path} \t- \tMétodo: {request.method}')
-#     return render_template('show_pie.html', pypie=Pypie.get_one_with_autor(data))
-
-# #VOTE PIE
-# @app.route('/vote/<int:id>')    #Revisa si hay voto, si hay lo borra, sino lo agrega
-# def vote(id):
-#     print(f'Inicio del módulo {inspect.stack()[0][3]}() \t- \tPath: {request.path} \t- \tMétodo: {request.method}')
-#     data ={
-#         'id': id,
-#         'user_id': session['user_id']
-#     }
-#     if Liked_pypie.get_vote(data):
-#         Liked_pypie.destroy(data)
-#     else:
-#         Liked_pypie.save(data)
-#     print(f'Fin del módulo {inspect.stack()[0][3]}() \t- \tPath: {request.path} \t- \tMétodo: {request.method}')
-#     return render_template('show_pie.html', pypie=Pypie.get_one_with_autor(data))
+    return render_template("dashboard.html", user_D=User.get_one_D(data_D), all_transactions=Transaction.get_all_LD(), 
+        total=Transaction.get_total_LD())
 
 ###USANDOSE
 #LOGOUT
@@ -195,7 +130,6 @@ def logout():
     return redirect("/")
 
 #FUNCIONES AUXILIARES PARA LOS CONTROLADORES
-
 #Podría estar dentro de los Modelos siendo que no se ejecuta a través de una ruta nueva pero redirige a un ruta por eso pienso que 
 #   es mejor dentro de los Controladores
 #A través de una ruta nueva no podría hacer que se ejecute porque esto se realiza al inicio de cada ruta
@@ -206,35 +140,3 @@ def validate_logged_in():   #Verifica si el usuario ingresó a la sesión, sino 
     if session['logged_in'] != True:
         return redirect("/")
     print(f'Fin del módulo {inspect.stack()[0][3]}()')
-
-
-
-
-
-
-# @app.route('/paintings/new')
-# def new_painting():
-#     print(f'Inicio del módulo {inspect.stack()[0][3]}() \t- \tPath: {request.path} \t- \tMétodo: {request.method}')
-#     validate_logged_in()
-#     print(f'Fin del módulo {inspect.stack()[0][3]}() \t- \tPath: {request.path} \t- \tMétodo: {request.method}')
-#     return render_template("new_painting.html")
-
-# @app.route('/paintings/add', methods=['POST'])            #ACA ME QUEDE!!!!!!!
-# def add_painting():
-#     print(f'Inicio del módulo {inspect.stack()[0][3]}() \t- \tPath: {request.path} \t- \tMétodo: {request.method}')
-#     if not Painting.validate_painting(request.form):
-#         return redirect("/")
-#     data = {
-#         "autor_id": session["user_id"],
-#         "title": request.form['title'],
-#         "description": request.form['description'],
-#         "price": request.form['price'],
-#         "quantity_created": request.form['quantity_created'],
-#         "quantity_buyed": 0,
-#         "posted": True
-#     }
-#     print(Painting.save(data))
-#     print(f'Fin del módulo {inspect.stack()[0][3]}() \t- \tPath: {request.path} \t- \tMétodo: {request.method}')
-#     return redirect("/paintings")
-
-

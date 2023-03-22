@@ -39,17 +39,17 @@
         <div class="container mt-5">
             <div class="row">
                 <div class="col"><button id="home"><a href="/dashboard">Menú</a></button></div>
-                <div class="col"><button id="home"><a href="/dashboard">Agregar gasto</a></button></div>
-                <div class="col"><button id="home"><a href="/dashboard">Agregar ingreso</a></button></div>
-                <div class="col"><button id="home"><a href="/dashboard">Ver transacciones</a></button></div>
-                <div class="col"><button id="home"><a href="/dashboard">Calendario</a></button></div>
-                <div class="col"><button id="home"><a href="/dashboard">Gráficos</a></button></div>
-                <div class="col"><button id="home"><a href="/dashboard">Editar usuario</a></button></div>
+                <div class="col"><button id="Agregar_Transacción"><a href="/transaction/new">Agregar Transacción</a></button></div>
+                <!-- <div class="col"><button id="home"><a href="/transaction/new_income">Agregar ingreso</a></button></div> -->
+                <!-- <div class="col"><button id="Ver_transacciones"><a href="/transaction">Ver transacciones</a></button></div> -->
+                <!-- <div class="col"><button id="home"><a href="/dashboard">Calendario</a></button></div>
+                <div class="col"><button id="home"><a href="/dashboard">Gráficos</a></button></div> -->
+                <div class="col"><button id="Editar_usuario"><a href="/dashboard">Editar usuario</a></button></div>
                 <div class="col"><button id="logout"><a href="/logout">Logout</a></button></div>
             </div>
             <div class="row">
                 <div class="col">
-                    <h3>Bienvenido {{ user_C.complete_name }}</h3>
+                    <h3>Bienvenido {{ user_D["complete_name"] }}</h3>
                 </div>
             </div>
             <div class="row">
@@ -66,12 +66,51 @@
                             </tr>
                             <tr>
                                 <td>Saldo del mes:</td>
-                                <td>$$$</td>
+                                <td>{{ total }}</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
                 <div class="row">
+                    <div class="col">
+                        <h2 class="text-sm-start text-white">Todas las transacciones</h2>
+                        <table class="table table-hover">
+                            <thead class="bg-dark text-white">
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Monto</th>
+                                    <th>Descripción</th>
+                                    <th>Usuario Id</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white">
+                                {% for each_transaction in all_transactions %}
+                                    
+                                        <tr>
+                                            <td>{{ each_transaction["date"] }}</td>
+                                            <td>{{ each_transaction["amount"] }}</td>
+                                            <td>{{ each_transaction["description"] }}</td>
+                                            <td>{{ each_transaction["transaction_as_id"] }}</td>
+                                            <td>
+                                                <a href="/transaction/edit/{{ each_transaction.id }}">Edit</a> |
+                                                <a href="/transaction/delete/{{ each_transaction.id }}">Delete</a>
+                                            </td>
+                                        </tr>
+                            
+                                {% endfor %}
+                                <tr>
+                                    <td><b>TOTAL:</b></td>
+                                    <td><b>{{ total }}</b></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- <div class="row">
                     <h4>Próximos gastos programados</h4>
                     <table class="table table-warning">
                         <tbody>
@@ -91,7 +130,7 @@
                             {% endfor %}
                         </tbody>
                     </table>
-                </div>
+                </div> -->
             </div>
         </div>
     </body>
